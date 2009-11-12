@@ -13,7 +13,7 @@ module Q4M
       hash = {}
       new_methods = []
       status.split(/\r?\n/).each do |line|
-        return unless line =~ /^([\w_]+)\s+(\d+)$/
+        next unless (line =~ /^([\w_]+)\s+(\d+)$/)
 
         name, value = $1, $2
         # rubyのメソッドとかぶらないかチェック必要か
@@ -22,7 +22,7 @@ module Q4M
 #        end
         hash[name] = value
       end
-      StructFromHash hash
+      ::Q4M.StructFromHash hash
     end
   end
 end
