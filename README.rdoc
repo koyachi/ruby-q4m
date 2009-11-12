@@ -1,0 +1,29 @@
+
+= q4m
+
+
+== Description
+
+
+== Installation
+
+=== Archive Installation
+
+	rake install
+
+=== Gem Installation
+
+	gem install q4m
+
+
+== Features/Problems
+
+
+== Synopsis
+
+
+== Copyright
+
+Author::  koyachi <rtk2106@gmail.com>
+Copyright:: Copyright (c) 2009 koyachi
+License:: MIT
