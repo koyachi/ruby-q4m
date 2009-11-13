@@ -25,7 +25,7 @@ end
 
 DIR = File.expand_path(File.dirname(File.expand_path(__FILE__)))
 $:.unshift DIR
-%w[loggable q4m result status].each do |m|
+%w[loggable client result status].each do |m|
   require "q4m/#{m}"
 end
 
@@ -50,7 +50,7 @@ module Q4M
 
     def connect(args)
       unless self.instance
-        self.instance = ::Q4M::Q4M.new args
+        self.instance = ::Q4M::Client.new args
       end
       if old = self.instance._dbh
         begin

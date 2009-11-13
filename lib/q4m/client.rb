@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class Q4M::Q4M
+class Q4M::Client
   def self.destroy(_dbh, _owner_mode)
     proc {
       if _dbh

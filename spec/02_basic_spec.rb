@@ -23,7 +23,7 @@ describe 'basic' do
 
   it 'should 1' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
-    @q.should be_an_instance_of(Q4M::Q4M)
+    @q.should be_an_instance_of(Q4M::Client)
 
     max = 32
     1.upto(max) do |i|
@@ -48,7 +48,7 @@ describe 'basic' do
 
   it '2' do
     @q = Q4M.connect :table => @table, :connect_info => Q4MTestHelper::CONNECT_INFO
-    @q.should be_an_instance_of(Q4M::Q4M)
+    @q.should be_an_instance_of(Q4M::Client)
 
     _before = Time.now
     @q.next @table, 5
@@ -57,7 +57,7 @@ describe 'basic' do
 
   it '3' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
-    @q.should be_an_instance_of(Q4M::Q4M)
+    @q.should be_an_instance_of(Q4M::Client)
 
     @table = Q4MTestHelper::TABLES[rand Q4MTestHelper::TABLES.length]
     @q.insert @table, {:v => 1}
@@ -76,7 +76,7 @@ describe 'basic' do
 
   it '4' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
-    @q.should be_an_instance_of(Q4M::Q4M)
+    @q.should be_an_instance_of(Q4M::Client)
 
     timeout = 1
     @q.next(@table, timeout).should == nil # どうすっか
@@ -84,7 +84,7 @@ describe 'basic' do
 
   it '5' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
-    @q.should be_an_instance_of(Q4M::Q4M)
+    @q.should be_an_instance_of(Q4M::Client)
 
     max = 32
     1.upto(max) do |i|
@@ -107,7 +107,7 @@ describe 'basic' do
 
   it '6' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
-    @q.should be_an_instance_of(Q4M::Q4M)
+    @q.should be_an_instance_of(Q4M::Client)
 
     @q.disconnect
 
@@ -120,7 +120,7 @@ describe 'basic' do
 
   it '7' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
-    @q.should be_an_instance_of(Q4M::Q4M)
+    @q.should be_an_instance_of(Q4M::Client)
 
 #    @q.insert(@table, {:v => 1}).should == 1
     @q.insert @table, {:v => 1}

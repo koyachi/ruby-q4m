@@ -29,7 +29,7 @@ describe 'status' do
 
   it 'should foffff' do
     q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
-    q.should be_an_instance_of(Q4M::Q4M)
+    q.should be_an_instance_of(Q4M::Client)
 
     before_status = q.status
     
