@@ -1,0 +1,15 @@
+TODO
+
+- dbi, prepare/execute/fetch_arrayを一行で実行したい
+  - Q4M::Q4M#next
+  - 
+- dataobjects検討
+- Q4M::Resultが適当なのでどうにかする
+  - boolean
+  - 
+  - 
+- ruby風にeachとか yield? -> EMのループをまねするといいかも
+- stacktrace, perlのCarp confessみたいの
+- TEST!!!!
+- 
+

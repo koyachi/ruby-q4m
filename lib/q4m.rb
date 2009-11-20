@@ -1,19 +1,4 @@
 # -*- coding: utf-8 -*-
-
-# TODO
-# - dbi, prepare/execute/fetch_arrayを一行で実行したい
-#   - Q4M::Q4M#next
-#   - 
-# - モジュール、クラス名の整備、特にQ4M::Q4M
-# - Q4M::Resultが適当なのでどうにかする
-#   - boolean
-#   - 
-#   - 
-# - ruby風にeachとか yield? -> EMのループをまねするといいかも
-# - stacktrace, perlのCarp confessみたいの
-# - TEST!!!!
-# - 
-
 require 'dbi'
 require 'logger'
 
