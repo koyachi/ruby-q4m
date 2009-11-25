@@ -80,6 +80,36 @@ class Q4M::Client
     table.nil? ? nil : res
   end
 
+  def queue_end
+    _dbh.do "SELECT queue_end();"
+  end
+
+  # v 複数ワーカー指定可能
+  # v ワーカー１つで複数キュー指定時は優先度キューとして動作
+  # v 複数ワーカーで複数キュー指定時
+  def start_worker(*workers)
+    worker_instances = workers.map {|w| w.new}
+    handlers = {}
+    worker_instances.each do |wi|
+      if wi.queue.instance_of? String || (wi.queue.instance_of? Array && wi.queue.length == 1)
+        handlers.merge!({wi.queue => wi})
+      else
+        handlers.merge!(Hash[*wi.queue.map {|q| [q, wi]}.flatten])
+      end
+    end
+    queues = [worker_instances.map{|w| w.queue}.flatten]
+    loop do
+      table = self.next(queues, 10)
+      if table
+        table = table.to_s
+        result = self.fetch_hash table
+        handlers[table].__send__ 'work', result, table
+        self.queue_end
+      end
+      sleep 1
+    end
+  end
+
   %w[array hash].each do |m|
     module_eval %{
       def fetch_#{m}(table=nil, *rst)

@@ -10,7 +10,7 @@ end
 
 DIR = File.expand_path(File.dirname(File.expand_path(__FILE__)))
 $:.unshift DIR
-%w[loggable client result status].each do |m|
+%w[loggable client result status worker].each do |m|
   require "q4m/#{m}"
 end
 
