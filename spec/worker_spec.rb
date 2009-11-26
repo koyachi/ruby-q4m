@@ -6,7 +6,7 @@ require 'timeout'
 
 class Worker1 < Q4M::Worker
   def initialize
-    @queue = Q4MTestHelper::TABLES[0]
+    @queue_tables = Q4MTestHelper::TABLES[0]
     @count = 1
   end
 
@@ -18,7 +18,7 @@ end
 
 class Worker2 < Q4M::Worker
   def initialize
-    @queue = Q4MTestHelper::TABLES[1]
+    @queue_tables = Q4MTestHelper::TABLES[1]
     @count = 1
   end
 
@@ -30,7 +30,7 @@ end
 
 class Worker3 < Q4M::Worker
   def initialize
-    @queue = [Q4MTestHelper::TABLES[2], Q4MTestHelper::TABLES[3]]
+    @queue_tables = [Q4MTestHelper::TABLES[2], Q4MTestHelper::TABLES[3]]
     @count = 1
   end
 
@@ -51,7 +51,7 @@ end
 
 class Worker4 < Q4M::Worker
   def initialize
-    @queue = [Q4MTestHelper::TABLES[4], Q4MTestHelper::TABLES[5]]
+    @queue_tables = [Q4MTestHelper::TABLES[4], Q4MTestHelper::TABLES[5]]
     @count = 1
   end
 

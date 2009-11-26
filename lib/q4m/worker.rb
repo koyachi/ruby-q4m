@@ -1,9 +1,9 @@
 
 class Q4M::Worker
-  attr_accessor :queue
+  attr_accessor :queue_tables
 
   def initialize
-    @queue = nil
+    @queue_tables = nil
   end
 
   def work(job, queue=nil)

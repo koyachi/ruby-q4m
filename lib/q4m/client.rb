@@ -91,15 +91,15 @@ class Q4M::Client
     worker_instances = workers.map {|w| w.new}
     handlers = {}
     worker_instances.each do |wi|
-      if wi.queue.instance_of? String || (wi.queue.instance_of? Array && wi.queue.length == 1)
-        handlers.merge!({wi.queue => wi})
+      if wi.queue_tables.instance_of? String || (wi.queue_tables.instance_of? Array && wi.queue_tables.length == 1)
+        handlers.merge!({wi.queue_tables => wi})
       else
-        handlers.merge!(Hash[*wi.queue.map {|q| [q, wi]}.flatten])
+        handlers.merge!(Hash[*wi.queue_tables.map {|q| [q, wi]}.flatten])
       end
     end
-    queues = [worker_instances.map{|w| w.queue}.flatten]
+    queue_tables = [worker_instances.map{|w| w.queue_tables}.flatten]
     loop do
-      table = self.next(queues, 10)
+      table = self.next(queue_tables, 10)
       if table
         table = table.to_s
         result = self.fetch_hash table
