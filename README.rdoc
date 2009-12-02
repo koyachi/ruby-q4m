@@ -1,11 +1,18 @@
 
 = q4m
 
+Queue::Q4M(http://search.cpan.org/dist/Queue-Q4M/) for ruby
 
 == Description
 
 
 == Installation
+
+=== Requirements
+
+* MySQL 5.1~
+* {q4m}[http://q4m.31tools.com/]
+* dbi
 
 === Archive Installation
 
