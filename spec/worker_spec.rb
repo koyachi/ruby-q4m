@@ -4,7 +4,8 @@ $:.unshift File.dirname(__FILE__)
 require 'spec_helper'
 require 'timeout'
 
-class Worker1 < Q4M::Worker
+class Worker1
+  include Q4M::Worker
   def initialize
     @queue_tables = Q4MTestHelper::TABLES[0]
     @count = 1
@@ -16,7 +17,8 @@ class Worker1 < Q4M::Worker
   end
 end
 
-class Worker2 < Q4M::Worker
+class Worker2
+  include Q4M::Worker
   def initialize
     @queue_tables = Q4MTestHelper::TABLES[1]
     @count = 1
@@ -28,7 +30,8 @@ class Worker2 < Q4M::Worker
   end
 end
 
-class Worker3 < Q4M::Worker
+class Worker3
+  include Q4M::Worker
   def initialize
     @queue_tables = [Q4MTestHelper::TABLES[2], Q4MTestHelper::TABLES[3]]
     @count = 1
@@ -49,7 +52,8 @@ class Worker3 < Q4M::Worker
   end
 end
 
-class Worker4 < Q4M::Worker
+class Worker4
+  include Q4M::Worker
   def initialize
     @queue_tables = [Q4MTestHelper::TABLES[4], Q4MTestHelper::TABLES[5]]
     @count = 1

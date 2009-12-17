@@ -1,5 +1,5 @@
 
-class Q4M::Worker
+module Q4M::Worker
   attr_accessor :queue_tables
 
   def initialize
