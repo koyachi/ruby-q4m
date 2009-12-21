@@ -87,8 +87,8 @@ class Q4M::Client
   # v 複数ワーカー指定可能
   # v ワーカー１つで複数キュー指定時は優先度キューとして動作
   # v 複数ワーカーで複数キュー指定時
-  def start_worker(*workers)
-    worker_instances = workers.map {|w| w.new}
+  def start_worker(workers, config=nil)
+    worker_instances = workers.map {|w| w.new config}
     handlers = {}
     worker_instances.each do |wi|
       if wi.queue_tables.instance_of? String || (wi.queue_tables.instance_of? Array && wi.queue_tables.length == 1)
