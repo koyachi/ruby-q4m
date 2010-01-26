@@ -7,5 +7,6 @@ module Q4M::Worker
   end
 
   def work(job, queue=nil)
+    super job, queue
   end
 end
