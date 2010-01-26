@@ -98,13 +98,22 @@ class Q4M::Client
       end
     end
     queue_tables = [worker_instances.map{|w| w.queue_tables}.flatten]
+    prev_rowid = nil
     loop do
       table = self.next(queue_tables, 10)
       if table
         table = table.to_s
         result = self.fetch_hash table
+        current_rowid = _dbh.select_one('SELECT queue_rowid();')[0]
+        if current_rowid == prev_rowid
+          # error
+          next
+        end
+        prev_rowid = current_rowid
         handlers[table].__send__ 'work', result, table
         self.queue_end
+        ObjectSpace.undefine_finalizer self
+        ObjectSpace.define_finalizer self, self.class.destroy(@_dbh, @owner_mode)
       end
       sleep 1
     end
