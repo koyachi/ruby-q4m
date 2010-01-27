@@ -38,7 +38,7 @@ class Q4M::Client
   end
 
   def disconnect
-    self.class.destroy(self.dbh, owner_mode).call
+    self.class.destroy(self.dbh, @owner_mode).call
   end
 
   def dbh

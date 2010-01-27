@@ -11,31 +11,31 @@ module Q4MTestHelper
     dsn = "DBI:Mysql:database=#{dsn}"
   end
 
-  begin
-    CONNECT_INFO = [dsn, username, password]
-    dbh = DBI.connect *CONNECT_INFO
-    TABLES = (1..10).map {|v| ['q4m', 'test', v, $$].join('_')}
-    TABLES.each do |table|
-      sql = "CREATE TABLE IF NOT EXISTS #{table} (v INTEGER NOT NULL) ENGINE=QUEUE;"
-      dbh.do sql
-    end
-  rescue Exception => e
-    p e
-    # SKIP ALL "Could not setup mysql"
-  end
+  CONNECT_INFO = [dsn, username, password]
+  TABLES = (1..10).map {|v| ['q4m', 'test', v, $$].join('_')}
 
-  def create_queue
-    Q4M :connect_info => CONNECT_INFO
-  end
-
-  def destroy_tables
-    begin
+  class << self
+    def create_test_table
       dbh = DBI.connect *CONNECT_INFO
       TABLES.each do |table|
-        dbh.do 'DROP TABLES #{table}'
+        sql = "CREATE TABLE IF NOT EXISTS #{table} (v INTEGER NOT NULL) ENGINE=QUEUE;"
+        dbh.do sql
       end
-    rescue e
-      p e
+    end
+
+    def create_queue
+      Q4M :connect_info => CONNECT_INFO
+    end
+
+    def destroy_tables
+      begin
+        dbh = DBI.connect *CONNECT_INFO
+        TABLES.each do |table|
+          dbh.do "DROP TABLE IF EXISTS #{table}"
+        end
+      rescue
+        p $!
+      end
     end
   end
 end

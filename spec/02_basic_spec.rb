@@ -3,10 +3,10 @@ $:.unshift File.dirname(__FILE__)
 
 require 'spec_helper'
 
-describe 'basic' do
+describe 'Q4M::Client basic methods' do
   before do
+    Q4MTestHelper.create_test_table
     @table = Q4MTestHelper::TABLES[0]
-#    @q = Queue::Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
     @q = nil
   end
 
@@ -15,38 +15,29 @@ describe 'basic' do
   end
 
   after(:all) do
-    dbh = DBI.connect *Q4MTestHelper::CONNECT_INFO
-    Q4MTestHelper::TABLES.each do |table|
-      dbh.do "DROP TABLE #{table}"
-    end
+    Q4MTestHelper.destroy_tables
   end
 
-  it 'should 1' do
+  it 'should fetched as hash when fetched by #fetch_hash' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
     @q.should be_an_instance_of(Q4M::Client)
 
     max = 32
     1.upto(max) do |i|
-      # sth.executeがnil返すのでとりあえずノーチェック
-#      @q.insert(@table, {:v => i}).should == 1
       @q.insert @table, {:v => i}
     end
     count = 0
     while @q.next(@table) do
       h = @q.fetch_hash
       count += 1
+      h[:v].to_i.should == count
       break if h.v.to_i == max
     end
-    # eachのほうがいいか？ -> queue-q4m-rubish/perlish
-    # これだとh[:v]の確認できないな
-    # @q.each(@table) do |h|
-    #   count += 1
-    # end
 
     count.should == max
   end
 
-  it '2' do
+  it 'should timeout if specified timeout sec to #next' do
     @q = Q4M.connect :table => @table, :connect_info => Q4MTestHelper::CONNECT_INFO
     @q.should be_an_instance_of(Q4M::Client)
 
@@ -55,7 +46,7 @@ describe 'basic' do
     (Time.now - _before).should >= 4
   end
 
-  it '3' do
+  it 'should fetch inserted queue if more than one queues that include inserted queue ware specified' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
     @q.should be_an_instance_of(Q4M::Client)
 
@@ -64,8 +55,6 @@ describe 'basic' do
 
     max = 1
     count = 0
-#    while which = @q.next([Q4MTestHelper::TABLES, 5].flatten) do
-#    while which = @q.next(*([Q4MTestHelper::TABLES, 5].flatten)) do
     while which = @q.next(Q4MTestHelper::TABLES, 5) do
       which.to_s.should == @table
       v = @q.fetch(which, 'v')
@@ -74,15 +63,15 @@ describe 'basic' do
     end
   end
 
-  it '4' do
+  it 'should return nil if expire specified time to #next' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
     @q.should be_an_instance_of(Q4M::Client)
 
     timeout = 1
-    @q.next(@table, timeout).should == nil # どうすっか
+    @q.next(@table, timeout).should == nil
   end
 
-  it '5' do
+  it 'should fetch queues that meets condition specified ti #next' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
     @q.should be_an_instance_of(Q4M::Client)
 
@@ -105,26 +94,23 @@ describe 'basic' do
     @q.dbh.do "DELETE FROM #{@table}"
   end
 
-  it '6' do
+  it 'should have no rows after #clear' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
     @q.should be_an_instance_of(Q4M::Client)
 
     @q.disconnect
 
-#    @q.insert(@table, {:v => 1}).should == 1
     @q.insert @table, {:v => 1}
-#    @q.clear(@table).should == 1
     @q.clear(@table)
     
+    @q.dbh.select_one("SELECT * FROM #{@table};").should == nil
   end
 
-  it '7' do
+  it 'should #fetch' do
     @q = Q4M.connect :connect_info => Q4MTestHelper::CONNECT_INFO
     @q.should be_an_instance_of(Q4M::Client)
 
-#    @q.insert(@table, {:v => 1}).should == 1
     @q.insert @table, {:v => 1}
-#    @q.next(@table).should == 1
     @q.next(@table).rv.should == true
     @q.fetch(@table).should == ['1']
   end
