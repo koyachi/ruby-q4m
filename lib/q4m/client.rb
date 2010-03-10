@@ -110,8 +110,8 @@ class Q4M::Client
           next
         end
         prev_rowid = current_rowid
-        handlers[table].__send__ 'work', result, table
         self.queue_end
+        handlers[table].__send__ 'work', result, table
         ObjectSpace.undefine_finalizer self
         ObjectSpace.define_finalizer self, self.class.destroy(@_dbh, @owner_mode)
       end
